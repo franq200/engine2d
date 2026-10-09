@@ -1,6 +1,8 @@
-#include <iostream>
+#include <engine/Application.h>
 
 int main()
 {
-    std::cout << "Hello world";
+    Application app;
+    app.Run();
+    return 0;
 }
