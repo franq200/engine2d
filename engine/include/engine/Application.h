@@ -6,8 +6,13 @@ class Application
 {
 public:
     Application();
-    ~Application();
+    virtual ~Application();
     void Run();
 private:
     SDL_Window* window_ = nullptr;
+	int updatesPerSecond_ = 60;
+protected:
+    virtual void OnFixedUpdate(double dt) {};
+	virtual void OnUpdate(double dt) {};
+	virtual void OnRender() {};
 };

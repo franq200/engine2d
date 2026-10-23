@@ -1,5 +1,8 @@
 #include <engine/Application.h>
+#include <chrono>
 #include <SDL3/SDL.h>
+
+using Clock = std::chrono::steady_clock;
 
 Application::Application()
 {
@@ -18,6 +21,11 @@ Application::~Application()
 
 void Application::Run()
 {
+	const double fixedStep = 1.0 / static_cast<double>(updatesPerSecond_);
+	const double maxFrameTime = 0.25;
+	double accumulator = 0.0;
+	Clock::time_point previousTime = Clock::now();
+
 	bool running = true;
 	while (running)
 	{
@@ -29,5 +37,27 @@ void Application::Run()
 				running = false;
 			}
 		}
+		if (!running)
+		{
+			break;
+		}
+
+		Clock::time_point currentTime = Clock::now();
+		double dt = std::chrono::duration<double>(currentTime - previousTime).count();
+		if (dt > maxFrameTime)
+		{
+			dt = maxFrameTime;
+		}
+		accumulator += dt;
+		previousTime = currentTime;
+
+		while (accumulator >= fixedStep)
+		{
+			OnFixedUpdate(fixedStep);
+			accumulator -= fixedStep;
+		}
+
+		OnUpdate(dt);
+		OnRender();
 	}
 }
