@@ -24,6 +24,9 @@ private:
 			timer_ -= 1.0;
 		}
 	}
+	void OnRender(Renderer& renderer) override
+	{
+	}
 };
 
 int main()

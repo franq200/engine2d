@@ -1,6 +1,7 @@
 #include <engine/Application.h>
 #include <chrono>
 #include <SDL3/SDL.h>
+#include <engine/Renderer.h>
 
 using Clock = std::chrono::steady_clock;
 
@@ -8,6 +9,7 @@ Application::Application()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	window_ = SDL_CreateWindow("My Application", 1000, 1000, SDL_WINDOW_RESIZABLE);
+	renderer_ = std::make_unique<Renderer>(window_);
 }
 
 Application::~Application()
@@ -58,6 +60,8 @@ void Application::Run()
 		}
 
 		OnUpdate(dt);
-		OnRender();
+		renderer_->Clear({ 67, 50, 255, 255 });
+		OnRender(*renderer_);
+		renderer_->Present();
 	}
 }
