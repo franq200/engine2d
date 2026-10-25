@@ -1,16 +1,8 @@
 #pragma once
-#include <cstdint>
+#include <engine/Types.h>
 
 struct SDL_Renderer;
 struct SDL_Window;
-
-struct Color
-{
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-	uint8_t a;
-};
 
 class Renderer
 {
@@ -20,6 +12,7 @@ public:
 	Renderer& operator=(const Renderer&) = delete;
 	~Renderer();
 
+	void FillRect(Rect rect, Color color);
 	void Clear(Color color);
 	void Present();
 private:

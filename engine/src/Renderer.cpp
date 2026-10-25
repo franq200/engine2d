@@ -4,6 +4,7 @@
 Renderer::Renderer(SDL_Window* window)
 {
 	renderer_ = SDL_CreateRenderer(window, nullptr);
+	SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
 }
 
 Renderer::~Renderer()
@@ -14,19 +15,32 @@ Renderer::~Renderer()
 	}
 }
 
+void Renderer::FillRect(Rect rect, Color color)
+{
+	if (!renderer_)
+	{
+		return;
+	}
+	SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+	SDL_FRect sdlRect = { rect.x, rect.y, rect.w, rect.h };
+	SDL_RenderFillRect(renderer_, &sdlRect);
+}
+
 void Renderer::Clear(Color color)
 {
-	if (renderer_)
+	if (!renderer_)
 	{
-		SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
-		SDL_RenderClear(renderer_);
+		return;
 	}
+	SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+	SDL_RenderClear(renderer_);
 }
 
 void Renderer::Present()
 {
-	if (renderer_)
+	if (!renderer_)
 	{
-		SDL_RenderPresent(renderer_);
+		return;
 	}
+	SDL_RenderPresent(renderer_);
 }

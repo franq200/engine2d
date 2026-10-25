@@ -1,4 +1,5 @@
 #include <engine/Application.h>
+#include <engine/Renderer.h>
 #include <iostream>
 
 class GameTest : public Application
@@ -7,10 +8,12 @@ private:
 	int fixedCount_ = 0;
 	int frameCount_ = 0;
 	double timer_ = 0.0;
+	Rect rect_ = { 100, 100, 200, 200 };
 
 	void OnFixedUpdate(double dt) override
 	{
 		fixedCount_++;
+		rect_.x += 10.0f * static_cast<float>(dt);
 	}
 	void OnUpdate(double dt) override
 	{
@@ -26,6 +29,7 @@ private:
 	}
 	void OnRender(Renderer& renderer) override
 	{
+		renderer.FillRect(rect_, { 255, 0, 0, 255 });
 	}
 };
 
